@@ -9,12 +9,12 @@ const theme = localStorage.getItem('xuan-theme');
 let timeFormat = localStorage.getItem('xuan-time-format');
 
 function dark() {
-  document.body.classList.add('dark');
+  document.documentElement.classList.add('dark');
   localStorage.setItem('xuan-theme', 'dark');
 }
 
 function light() {
-  document.body.classList.remove('dark');
+  document.documentElement.classList.remove('dark');
   localStorage.setItem('xuan-theme', 'light');
 }
 
@@ -53,10 +53,10 @@ function updateTime(target, value, maxValue) {
       it.innerText = formatTwoDigits(nextDisplayHour);
     });
     target.querySelector('.bottom.before').innerHTML = `${formatTwoDigits(
-      displayHour
+      displayHour,
     )}<span class="ampm">${ampm}</span>`;
     target.querySelector('.bottom.after').innerHTML = `${formatTwoDigits(
-      nextDisplayHour
+      nextDisplayHour,
     )}<span class="ampm">${nextAmpm}</span>`;
 
     return;
@@ -108,30 +108,28 @@ const getCurrentTime = async () => {
 getCurrentTime();
 setInterval(getCurrentTime, 1000);
 
-window.onload = function () {
-  if (!theme) {
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      dark();
-      themeToggle.value = 'dark';
-    } else {
-      light();
-      themeToggle.value = 'light';
-    }
+if (!theme) {
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    dark();
+    themeToggle.value = 'dark';
   } else {
-    themeToggle.value = theme;
-    if (theme === 'dark') {
-      dark();
-    } else {
-      light();
-    }
+    light();
+    themeToggle.value = 'light';
   }
+} else {
+  themeToggle.value = theme;
+  if (theme === 'dark') {
+    dark();
+  } else {
+    light();
+  }
+}
 
-  if (timeFormat) {
-    timeFormatToggle.value = timeFormat;
-  } else {
-    localStorage.setItem('time-format', timeFormatToggle.value);
-  }
-};
+if (timeFormat) {
+  timeFormatToggle.value = timeFormat;
+} else {
+  localStorage.setItem('xuan-time-format', timeFormatToggle.value);
+}
 
 themeToggle.addEventListener('change', (e) => {
   if (e.target.value === 'dark') {
