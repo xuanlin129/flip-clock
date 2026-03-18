@@ -2,6 +2,11 @@ const date = document.querySelector('#date');
 const clock = document.querySelector('#clock');
 const themeToggle = document.querySelector('select[name="theme"]');
 const timeFormatToggle = document.querySelector('select[name="timeFormat"]');
+const footerYear = document.querySelector('#footer-year');
+
+if (footerYear) {
+  footerYear.textContent = new Date().getFullYear();
+}
 
 const timeUnits = ['hour', 'minute', 'second'];
 const areas = {};
